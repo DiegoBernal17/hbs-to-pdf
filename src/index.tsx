@@ -4,7 +4,7 @@ import puppeteer, { PDFMargin } from "puppeteer";
 interface CreateProps {
   template: string | Buffer;
   context: object;
-  path: string;
+  path?: string;
   margin?: PDFMargin;
 }
 export async function create(document: CreateProps): Promise<Buffer> {
