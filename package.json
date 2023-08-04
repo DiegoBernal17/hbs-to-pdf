@@ -1,0 +1,36 @@
+{
+  "name": "hbs-to-pdf",
+  "version": "1.0.0",
+  "description": "Small NodeJS library to convert handlebars files to pdf",
+  "main": "./dist/index.js",
+  "engines": {
+    "node": "=>16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DiegoBernal17/hbs-to-pdf.git"
+  },
+  "scripts": {
+    "start": "node ./build/index.js",
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "pdf",
+    "hbs"
+  ],
+  "files": [
+    "/dist",
+    "README.md"
+  ],
+  "author": "Diego P. Bernal (DiegoBernal17)",
+  "license": "MIT",
+  "dependencies": {
+    "handlebars": "^4.7.8",
+    "puppeteer": "^21.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.7",
+    "typescript": "^5.1.6"
+  }
+}
