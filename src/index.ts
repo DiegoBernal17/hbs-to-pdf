@@ -2,14 +2,19 @@ const puppeteer = require("puppeteer");
 import Handlebars from "handlebars";
 
 interface CreateProps {
-  template: string | Buffer;
   context: object;
+  template: string | Buffer;
+  headerTemplate?: string | Buffer;
+  footerTemplate?: string | Buffer;
   path?: string;
   margin?: {
     top?: string | number;
     bottom?: string | number;
     left?: string | number;
     right?: string | number;
+  };
+  puppeteer?: {
+    noSandbox?: boolean;
   };
 }
 export async function create(document: CreateProps): Promise<Buffer> {
@@ -24,7 +29,10 @@ export async function create(document: CreateProps): Promise<Buffer> {
   }
   const html = Handlebars.compile(document.template)(document.context);
   // launch a new chrome instance
-  const browser = await puppeteer.launch({ headless: "new" });
+  const browser = await puppeteer.launch({
+    headless: "new",
+    ...(puppeteer?.noSandbox && { args: ["--no-sandbox"] }),
+  });
   // create a new page
   const page = await browser.newPage();
   // set your html as the pages content
@@ -35,11 +43,14 @@ export async function create(document: CreateProps): Promise<Buffer> {
     format: "A4",
     path: document.path,
     margin: document.margin || {
-      top: 20,
+      top: !!document.headerTemplate ? 220 : 20,
+      bottom: !!document.footerTemplate ? 60 : 20,
       right: 40,
-      bottom: 20,
       left: 40,
     },
+    displayHeaderFooter: !!document.headerTemplate || !!document.footerTemplate,
+    headerTemplate: document.headerTemplate,
+    footerTemplate: document.footerTemplate,
   });
   // close the browser
   await browser.close();

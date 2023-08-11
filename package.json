@@ -1,8 +1,9 @@
 {
   "name": "node-hbs-to-pdf",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Small NodeJS library to convert handlebars files to pdf",
-  "main": "./dist/index.js",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
   "engines": {
     "node": ">=16.0.0"
   },
