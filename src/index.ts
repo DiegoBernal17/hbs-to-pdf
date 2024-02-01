@@ -17,21 +17,21 @@ interface CreateProps {
     noSandbox?: boolean;
   };
 }
-export async function create(document: CreateProps): Promise<Buffer> {
-  if (!document || !document.template || !document.context) {
+export async function create(props: CreateProps): Promise<Buffer> {
+  if (!props || !props.template || !props.context) {
     throw new Error("Template and context are required");
   }
-  if ("margin" in document && typeof document.margin !== "object") {
+  if ("margin" in props && typeof props.margin !== "object") {
     throw new Error("margin must be an object");
   }
-  if (document.template instanceof Buffer) {
-    document.template = document.template.toString("utf8");
+  if (props.template instanceof Buffer) {
+    props.template = props.template.toString("utf8");
   }
-  const html = Handlebars.compile(document.template)(document.context);
+  const html = Handlebars.compile(props.template)(props.context);
   // launch a new chrome instance
   const browser = await puppeteer.launch({
     headless: "new",
-    ...(document.puppeteer?.noSandbox && { args: ["--no-sandbox"] }),
+    ...(props.puppeteer?.noSandbox && { args: ["--no-sandbox"] }),
   });
   // create a new page
   const page = await browser.newPage();
@@ -41,16 +41,16 @@ export async function create(document: CreateProps): Promise<Buffer> {
   const pdfBuffer = await page.pdf({
     printBackground: true,
     format: "A4",
-    path: document.path,
-    margin: document.margin || {
-      top: !!document.headerTemplate ? 220 : 20,
-      bottom: !!document.footerTemplate ? 60 : 20,
+    path: props.path,
+    margin: props.margin || {
+      top: !!props.headerTemplate ? 220 : 20,
+      bottom: !!props.footerTemplate ? 60 : 20,
       right: 40,
       left: 40,
     },
-    displayHeaderFooter: !!document.headerTemplate || !!document.footerTemplate,
-    headerTemplate: document.headerTemplate,
-    footerTemplate: document.footerTemplate,
+    displayHeaderFooter: !!props.headerTemplate || !!props.footerTemplate,
+    headerTemplate: props.headerTemplate,
+    footerTemplate: props.footerTemplate,
   });
   // close the browser
   await browser.close();
