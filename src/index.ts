@@ -31,7 +31,7 @@ export async function create(document: CreateProps): Promise<Buffer> {
   // launch a new chrome instance
   const browser = await puppeteer.launch({
     headless: "new",
-    ...(puppeteer?.noSandbox && { args: ["--no-sandbox"] }),
+    ...(document.puppeteer?.noSandbox && { args: ["--no-sandbox"] }),
   });
   // create a new page
   const page = await browser.newPage();
