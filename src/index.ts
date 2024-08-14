@@ -1,11 +1,12 @@
-const puppeteer = require("puppeteer");
+//const puppeteer = require("puppeteer");
+import puppeteer from "puppeteer";
 import Handlebars from "handlebars";
 
 interface CreateProps {
   context: object;
   template: string | Buffer;
-  headerTemplate?: string | Buffer;
-  footerTemplate?: string | Buffer;
+  headerTemplate?: string;
+  footerTemplate?: string;
   path?: string;
   margin?: {
     top?: string | number;

@@ -1,17 +1,29 @@
 {
   "name": "node-hbs-to-pdf",
   "type": "module",
-  "version": "1.0.6",
+  "version": "1.1",
   "description": "Small NodeJS library to convert handlebars files to pdf",
-  "main": "./build/index.js",
-  "types": "./build/index.d.ts",
+  "main": "./lib-cjs/index.cjs",
+  "module": "./lib-mjs/index.mjs",
+  "types": "./lib-cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib-cjs/index.d.ts",
+      "require": "./lib-cjs/index.cjs",
+      "import": "./lib-mjs/index.mjs"
+    }
+  },
   "engines": {
     "node": ">=16.0.0"
   },
   "scripts": {
     "start": "node ./build/index.js",
-    "build": "tsc",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "build": "npm run build:mjs && npm run build:cjs",
+    "build:mjs": "tsc -d -p tsconfig.mjs.json && npm run build:mjs:transform",
+    "build:mjs:transform": "mjscjs -p tsconfig.mjs.json",
+    "build:cjs": "tsc -d -p tsconfig.cjs.json && npm run build:cjs:transform",
+    "build:cjs:transform": "mjscjs -p tsconfig.cjs.json"
   },
   "keywords": [
     "pdf",
@@ -33,6 +45,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.4.7",
+    "mjscjs": "^1.1.0",
     "typescript": "^5.1.6"
   }
 }
